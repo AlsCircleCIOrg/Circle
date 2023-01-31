@@ -14,15 +14,17 @@ jobs:
     docker:
       - image: bash/bash:latest
     steps:
-      name: Approved by
-      command: echo $CIRCLE_USERNAME
+      - run:
+          name: Approved by
+          command: echo $CIRCLE_USERNAME
 
   approval-job-2:
     docker:
       - image: bash/bash:latest
     steps:
-      name: Approved by
-      command: echo $CIRCLE_USERNAME
+      - run:
+          name: Approved by
+          command: echo $CIRCLE_USERNAME
 
   last-job:
     docker:
