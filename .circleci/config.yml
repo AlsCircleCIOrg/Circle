@@ -1,29 +1,58 @@
 version: 2.1
 
 jobs:
-  build:
-    working_directory: ~/repo
+  first-job:
     docker:
-      - image: cimg/ruby:2.7.4-node
+      - image: cimg/base:stable-18.04
+    steps:
+      - checkout
+      - run:
+          name: First Step
+          command: pwd
+
+  approval-job-1:
+    docker:
+      - image: bash/bash:latest
+    steps:
+      name: Approved by
+      command: echo $CIRCLE_USERNAME
+
+  approval-job-2:
+    docker:
+      - image: bash/bash:latest
+    steps:
+      name: Approved by
+      command: echo $CIRCLE_USERNAME
+
+  last-job:
+    docker:
+      - image: cimg/base:stable-18.04
     steps:
       - run:
-          name: Current dir
-          command: pwd && echo "Bonjour"
+          name: More steps
+          command: pwd
 
 workflows:
-  build-and-deploy:
+  my-workflow:
     jobs:
-      - build
-            
-      - approve:
+      - first-job
+      - approval-1:
           type: approval
           requires:
-            - build
-
-      - build:
+            - first-job
+      - approval-job-1:
           requires:
-            - approve
-          name: Second Build
-          context:
-            - approval-job
-
+            - approval-1
+          context: group-1
+      - approval-2:
+          type: approval
+          requires:
+            - first-job            
+      - approval-job-2:
+          requires:
+            - approval-2
+          context: group-2
+      - last-job:
+          requires:
+            - approval-job-1
+            - approval-job-2
