@@ -12,18 +12,20 @@ jobs:
 
   approval-job-1:
     docker:
-      - image: bash/bash:latest
+      - image: bash:latest
     steps:
       - run:
           name: Approved by
+          shell: /usr/local/bin/bash
           command: echo $CIRCLE_USERNAME
 
   approval-job-2:
     docker:
-      - image: bash/bash:latest
+      - image: bash:latest
     steps:
       - run:
           name: Approved by
+          shell: /usr/local/bin/bash
           command: echo $CIRCLE_USERNAME
 
   last-job:
